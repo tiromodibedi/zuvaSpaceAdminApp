@@ -1,0 +1,263 @@
+<div>
+  <div id="page-title">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit Classifieds <small>Manage Classifieds</small></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="breadcrumb">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">Classified</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <!--The Dashboard-->
+          <div class="list-group" ng-controller="DashboardController"><!---->
+            <a href="index.html" class="list-group-item active main-color-bg">
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
+            </a>
+            <a href="classifieds.html" class="list-group-item"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Classifieds <span class="badge">{{numOfClassifieds}}</span></a>
+            <a href="users.html" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users <span class="badge">{{numOfUsers}}</span></a>
+          </div>
+          <!--Server Specifications-->
+          <div class="well" ng-controller="ServerSpecsController"><!---->
+            <h4>Disk Space Used</h4>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{diskSpaceUsed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{diskSpaceUsed}}%;">
+                    {{diskSpaceUsed}}%
+                </div>
+            </div>
+            <h4>Bandwidth Used </h4>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{bandwidthUsed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{bandwidthUsed}}%;">
+                  {{bandwidthUsed}}%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <!--Panel-->
+          <div class="panel panel-default" ng-controller="classifiedDetailController">
+            <!--Panel Heading-->
+            <div class="panel-heading main-color-bg">
+              <h3 class="panel-title">Classified</h3>
+            </div>
+            <!--Classified Details-->
+            <div class="panel-body" ng-if="!showEditForm">
+              <div class="media">
+                <div class="media-left media-middle">
+                  <a href="#">
+                    <cl-image public-id="{{classified.images[0].public_id}}" crop="fit" height="150" width="150" format="jpg"/>
+                  </a>
+                </div>
+              </div>
+              <div class="classified-details">
+                <div class="field">
+                  <strong>Classified Category: </strong> {{classified.classifiedCategory}}
+                </div>
+
+                <div class="field">
+                  <strong>Classified Sub Category: </strong> {{classified.classifiedSubCategory}}
+                </div>
+
+                <div class="field">
+                  <strong>Classified Type: </strong> {{classified.classifiedType}}
+                </div>
+
+                <div class="field">
+                  <strong>Listing Type: </strong> {{classified.listingType}}
+                </div>
+
+                <div class="field">
+                  <strong>Listing Duration: </strong> {{classified.listingDuration}} week
+                </div>
+
+                <div class="field">
+                  <strong>Premium Listing: </strong> {{classified.premiumListing}}
+                </div>
+
+                <div class="field">
+                  <strong>Description: </strong> {{classified.description}}
+                </div>
+
+                <div class="field">
+                  <strong>Location: </strong> {{classified.location}}
+                </div>
+
+                <div class="field">
+                  <strong>Cost: </strong> {{classified.cost}}
+                </div>
+
+                <span class="author"><p><b>classified sent by:</b></p></span>
+
+                <div class="field">
+                  <strong>Fullname: </strong> {{classified.author.fullname}}
+                </div>
+
+                <div class="field">
+                  <strong>Phone: </strong> {{classified.author.phone}}
+                </div>
+
+                <div class="field">
+                  <strong>Email: </strong> {{classified.author.email}}
+                </div>
+
+                <br>
+                <button type="clickToEdit" ng-click="editClassified()" class="btn btn-danger">Edit</button>
+              </div>
+            </div>
+            <!--Edit Classified Form-->
+            <div class="panel-body" ng-if="showEditForm">
+              <form  role="form" name="editClassifiedForm" ng-submit="updateClassified()" novalidate>
+
+                <div class="form-group"ng-class="{'has-error': editClassifiedForm.classifiedCategory.$error.required
+                && !editClassifiedForm.classifiedCategory.$pristine}">
+                  <label for="classifiedCategory">Classified Category</label>
+                  <select class="form-control" name="classifiedCategory" ng-model="classified.classifiedCategory"
+                  ng-options="classifiedCategory.value as classifiedCategory.label for classifiedCategory in classifiedCategories" required>
+                    <option value=""></option>
+                  </select>
+                  <span ng-show="editClassifiedForm.classifiedCategory.$error.required && !editClassifiedForm.classifiedCategory.$pristine" class="help-block">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.classifiedSubCategory.$error.required
+                && !editClassifiedForm.classifiedSubCategory.$pristine}">
+                  <label for="classifiedSubCategory">Classified Sub Category</label>
+                  <select class="form-control" name="classifiedSubCategory" ng-model="classified.classifiedSubCategory"
+                  ng-options="classifiedSubCategory.value as classifiedSubCategory.label for classifiedSubCategory in classifiedSubCategories" required>
+                    <option value=""></option>
+                  </select>
+                  <span ng-show="editClassifiedForm.classifiedSubCategory.$error.required && !editClassifiedForm.classifiedSubCategory.$pristine" class="help-block">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.classifiedType.$error.required
+                && !editClassifiedForm.classifiedType.$pristine}">
+                  <label for="classifiedType">Classified Type</label>
+                  <select class="form-control" name="classifiedType" ng-model="classified.classifiedType"
+                  ng-options="classifiedType.value as classifiedType.label for classifiedType in classifiedTypes" required>
+                    <option value=""></option>
+                  </select>
+                  <span ng-show="editClassifiedForm.classifiedType.$error.required && !editClassifiedForm.classifiedType.$pristine" class="help-block">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.listingType.$error.required
+                && !editClassifiedForm.listingType.$pristine}">
+                  <label for="listingType">Listing Type</label>
+                  <select class="form-control" name="listingType" ng-model="classified.listingType"
+                  ng-options="listingType.value as listingType.label for listingType in listingTypes" required>
+                    <option value=""></option>
+                  </select>
+                  <span ng-show="editClassifiedForm.listingType.$error.required && !editClassifiedForm.listingType.$pristine" class="help-block">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.listingDuration.$error.required
+                && !editClassifiedForm.listingDuration.$pristine}">
+                <label for="listingDuration">Listing Duration</label>
+                <select class="form-control" name="listingDuration" ng-model="classified.listingDuration"
+                ng-options="listingDuration.value as listingDuration.label for listingDuration in listingDurations" required>
+                  <option value=""></option>
+                </select>
+                <span ng-show="editClassifiedForm.listingDuration.$error.required && !editClassifiedForm.listingDuration.$pristine" class="help-block">
+                  This Field is required!!
+                </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.premiumListing.$error.required
+                && !editClassifiedForm.premiumListing.$pristine}">
+                  <label for="premiumListing">Premium Listing?</label>
+                  <select class="form-control" name="premiumListing" ng-model="classified.premiumListing"
+                  ng-options="premiumListing.value as premiumListing.label for premiumListing in premiumListingOptions" required>
+                    <option value=""></option>
+                  </select>
+                  <span ng-show="editClassifiedForm.premiumListing.$error.required && !editClassifiedForm.premiumListing.$pristine" class="help-block">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.description.$error.required
+                && !editClassifiedForm.description.$pristine}">
+                  <label for="description">description</label>
+                  <textarea maxlength="200" name="description" class="form-control" placeholder="Description" ng-model="classified.description" required></textarea>
+                  <span ng-show="editClassifiedForm.description.$error.required && !editClassifiedForm.description.$pristine">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.location.$error.required
+                && !editClassifiedForm.location.$pristine}">
+                  <label for="location">Location</label>
+                  <input type="text" name="location" class="form-control" ng-model="classified.location" required>
+                  <span ng-show="editClassifiedForm.location.$error.required && !editClassifiedForm.location.$pristine">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.cost.$error.required
+                && !editClassifiedForm.cost.$pristine}">
+                  <label for="cost">Cost</label>
+                  <input type="text" name="cost" class="form-control" ng-model="classified.cost" required>
+                  <span ng-show="editClassifiedForm.cost.$error.required && !editClassifiedForm.cost.$pristine">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <span class="author"><p><b>classified sent by:</b></p></span>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.authorFullname.$error.required
+                && !editClassifiedForm.authorFullname.$pristine}">
+                  <label for="authorFullname">Fullname</label>
+                  <input type="text" name="authorFullname"class="form-control" placeholder="Add Fullname of the client" ng-model="classified.author.fullname" required>
+                  <span ng-show="editClassifiedForm.authorFullname.$error.required && !editClassifiedForm.authorFullname.$pristine">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.authorPhone.$error.required
+                && !editClassifiedForm.authorPhone.$pristine}">
+                  <label for="authorPhone">Contact</label>
+                  <input type="text" name="authorPhone"class="form-control" placeholder="Add Contact number of the client" ng-model="classified.author.phone" required>
+                  <span ng-show="editClassifiedForm.authorPhone.$error.required && !editClassifiedForm.authorPhone.$pristine">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <div class="form-group" ng-class="{'has-error': editClassifiedForm.authorEmail.$error.required
+                && !editClassifiedForm.authorEmail.$pristine}">
+                  <label for="authorEmail">Contact</label>
+                  <input type="text" name="authorEmail"class="form-control" placeholder="Add Email address of the client" ng-model="classified.author.email" required>
+                  <span ng-show="editClassifiedForm.authorEmail.$error.required && !editClassifiedForm.authorEmail.$pristine">
+                    This Field is required!!
+                  </span>
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="button" ng-click="editClassified()" class="btn btn-danger">Cancel Edit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

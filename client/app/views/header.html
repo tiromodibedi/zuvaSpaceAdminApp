@@ -1,0 +1,40 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" ui-sref="app">ZuvaSpace Admin</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ng-class="{active: stateis('app')}"><a ui-sref="app">
+          <span class="glyphicon glyphicon-home"></span> Home</a>
+        </li>
+        <li ng-if="loggedIn" ng-class="{active: stateis('app.classifieds')}"><a ui-sref="app.classifieds">
+          <span class="glyphicon glyphicon-list-alt"></span> Classifieds</a>
+        </li>
+        <li ng-if="loggedIn" ng-class="{active: stateis('app.postClassified')}"><a ui-sref="app.postClassified">
+          <span class="glyphicon glyphicon-pencil"></span> Post Classified</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-if="!loggedIn">
+          <a ng-click="openLogin()">
+            <span class="glyphicon glyphicon-log-in"></span> Login
+          </a>
+        </li>
+        <li ng-if="loggedIn">
+          <a>{{username}}</a>
+        </li>
+        <li ng-if="loggedIn">
+          <a ng-click="logout()">
+            <span class="glyphicon glyphicon-log-in"></span> Logout
+          </a>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>

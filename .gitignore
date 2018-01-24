@@ -1,0 +1,13 @@
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+# CLIENT SIDE
+client/node_modules/
+client/bower_components/
+client/dist/
+client/app/scripts/config.js
+
+# SERVER SIDE
+server/node_modules
+server/config.js
+server/Procfile

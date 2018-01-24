@@ -1,0 +1,93 @@
+<div ng-controller="MenuController"><!--place the controller here for the whole page-->
+  <div id="page-title">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Classifieds <small>Manage Classifieds</small></h1>
+        </div>
+        <div class="col-md-2">
+          <div class="create">
+            <button  class="btn btn-default" type="button">
+              <a ui-sref="app.postClassified">Add a Classified</a>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="breadcrumb">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li><a ui-sref="app">Home</a></li>
+        <li class="active">Classifieds</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="list-group" ng-controller="DashboardController"><!---->
+            <a ui.sref="app" class="list-group-item active main-color-bg">
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Home
+            </a>
+            <a ui-sref="app.classifieds" class="list-group-item"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Classifieds <span class="badge">{{numOfClassifieds}}</span></a>
+            <a ui-sref="app.users" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users <span class="badge">{{numOfUsers}}</span></a>
+          </div>
+
+          <div class="well" ng-controller="ServerSpecsController"><!---->
+            <h4>Disk Space Used</h4>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{diskSpaceUsed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{diskSpaceUsed}}%;">
+                    {{diskSpaceUsed}}%
+                </div>
+            </div>
+            <h4>Bandwidth Used </h4>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{bandwidthUsed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{bandwidthUsed}}%;">
+                  {{bandwidthUsed}}%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <!-- Website Overview -->
+          <div class="panel panel-default">
+            <div class="panel-heading main-color-bg">
+              <h3 class="panel-title">Classifieds</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" name="search" placeholder="Search For..." ng-model="searchKeyword">
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="search(searchKeyword)">Search</button>
+                    <button type="button" class="btn btn-danger" ng-click="clear()" name="button">Clear</button>
+              </div>
+
+              <br>
+              <table class="table table-striped table-hover">
+                    <tr>
+                      <th>Sub Category</th>
+                      <th>Posted By</th>
+                      <th>Date Added</th>
+                      <th></th>
+                    </tr>
+                    <tr ng-repeat="classified in classifieds | filter: searchFilter" > <!---->
+                      <td>{{classified.classifiedSubCategory}}</td>
+                      <td>{{classified.author.fullname}}</td>
+                      <td>{{classified.createdAt | date}}</td>
+                      <td><a class="btn btn-default" ui-sref="app.classifiedDetails({id: classified._id})">View</a> <a class="btn btn-danger" ng-click="deleteClassified(classified._id)">Delete</a></td>
+                    </tr>
+                  </table>
+            </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,6 @@
+angular.module('zuvaSpaceAdminApp')
+.config(['cloudinaryProvider', function (cloudinaryProvider) {
+  cloudinaryProvider
+      .set("cloud_name", "your-cloud-name")
+      .set("upload_preset", "your-upload-preset");
+}]);

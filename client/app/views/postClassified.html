@@ -1,0 +1,213 @@
+<div><!--place the controller here for the whole page-->
+  <div id="page-title">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Post Classifieds <small>Manage Classifieds</small></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="breadcrumb">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">Post Classified</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="list-group" ng-controller="DashboardController"><!---->
+            <a href="index.html" class="list-group-item active main-color-bg">
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
+            </a>
+            <a ui-sref="app.classifieds" class="list-group-item"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Classifieds <span class="badge">{{numOfClassifieds}}</span></a>
+            <a ui-sref="app.users" class="list-group-item"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Users <span class="badge">{{numOfUsers}}</span></a>
+          </div>
+
+          <div class="well" ng-controller="ServerSpecsController"><!---->
+            <h4>Disk Space Used</h4>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{diskSpaceUsed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{diskSpaceUsed}}%;">
+                    {{diskSpaceUsed}}%
+                </div>
+            </div>
+            <h4>Bandwidth Used </h4>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{bandwidthUsed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{bandwidthUsed}}%;">
+                  {{bandwidthUsed}}%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="panel panel-default">
+            <div class="panel-heading main-color-bg">
+              <h3 class="panel-title">Add a Classified</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" name="postClassifiedForm" ng-submit="postNewClassified()" enctype="multipart/form-data" novalidate>
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.classifiedCategory.$error.required
+                  && !postClassifiedForm.classifiedCategory.$pristine}">
+                    <label for="classifiedCategory">Classified Category</label>
+                    <select class="form-control" name="classifiedCategory" ng-model="newClassified.classifiedCategory"
+                    ng-options="classifiedCategory.value as classifiedCategory.label for classifiedCategory in classifiedCategories" required>
+                      <option value=""></option>
+                    </select>
+                    <span ng-show="postClassifiedForm.classifiedCategory.$error.required && !postClassifiedForm.classifiedCategory.$pristine" class="help-block">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.classifiedSubCategory.$error.required
+                  && !postClassifiedForm.classifiedSubCategory.$pristine}">
+                    <label for="classifiedSubCategory">Classified Sub Category</label>
+                    <select class="form-control" name="classifiedSubCategory" ng-model="newClassified.classifiedSubCategory"
+                    ng-options="classifiedSubCategory.value as classifiedSubCategory.label for classifiedSubCategory in classifiedSubCategories" required>
+                      <option value=""></option>
+                    </select>
+                    <span ng-show="postClassifiedForm.classifiedSubCategory.$error.required && !postClassifiedForm.classifiedSubCategory.$pristine" class="help-block">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.classifiedType.$error.required
+                  && !postClassifiedForm.classifiedType.$pristine}">
+                    <label for="classifiedType">Classified Type</label>
+                    <select class="form-control" name="classifiedType" ng-model="newClassified.classifiedType"
+                    ng-options="classifiedType.value as classifiedType.label for classifiedType in classifiedTypes" required>
+                      <option value=""></option>
+                    </select>
+                    <span ng-show="postClassifiedForm.classifiedType.$error.required && !postClassifiedForm.classifiedType.$pristine" class="help-block">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.listingType.$error.required
+                  && !postClassifiedForm.listingType.$pristine}">
+                    <label for="listingType">Listing Type</label>
+                    <select class="form-control" name="listingType" ng-model="newClassified.listingType"
+                    ng-options="listingType.value as listingType.label for listingType in listingTypes" required>
+                      <option value=""></option>
+                    </select>
+                    <span ng-show="postClassifiedForm.listingType.$error.required && !postClassifiedForm.listingType.$pristine" class="help-block">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.listingDuration.$error.required
+                  && !postClassifiedForm.listingDuration.$pristine}">
+                  <label for="listingDuration">Listing Duration</label>
+                  <select class="form-control" name="listingDuration" ng-model="newClassified.listingDuration"
+                  ng-options="listingDuration.value as listingDuration.label for listingDuration in listingDurations" required>
+                    <option value=""></option>
+                  </select>
+                  <span ng-show="postClassifiedForm.listingDuration.$error.required && !postClassifiedForm.listingDuration.$pristine" class="help-block">
+                    This Field is required!!
+                  </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.premiumListing.$error.required
+                  && !postClassifiedForm.premiumListing.$pristine}">
+                    <label for="premiumListing">Premium Listing</label>
+                    <select class="form-control" name="premiumListing" ng-model="newClassified.premiumListing"
+                    ng-options="premiumListing.value as premiumListing.label for premiumListing in premiumListingOptions" required>
+                      <option value=""></option>
+                    </select>
+                    <span ng-show="postClassifiedForm.premiumListing.$error.required && !postClassifiedForm.premiumListing.$pristine" class="help-block">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.description.$error.required
+                  && !postClassifiedForm.description.$pristine}">
+                    <label for="description">description</label>
+                    <textarea maxlength="200" name="description" class="form-control" placeholder="Description" ng-model="newClassified.description" required></textarea>
+                    <span ng-show="postClassifiedForm.description.$error.required && !postClassifiedForm.description.$pristine">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.location.$error.required
+                  && !postClassifiedForm.location.$pristine}">
+                    <label for="location">Location</label>
+                    <input type="text" name="location" class="form-control" placeholder="Add location" ng-model="newClassified.location" required>
+                    <span ng-show="postClassifiedForm.location.$error.required && !postClassifiedForm.location.$pristine">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.cost.$error.required
+                  && !postClassifiedForm.cost.$pristine}">
+                    <label for="cost">Cost</label>
+                    <input type="number" name="cost" class="form-control" placeholder="Add cost" ng-model="newClassified.cost" required>
+                    <span ng-show="postClassifiedForm.cost.$error.required && !postClassifiedForm.cost.$pristine">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <span class="author"><p><b>classified sent by:</b></p></span>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.authorFullname.$error.required
+                  && !postClassifiedForm.authorFullname.$pristine}">
+                    <label for="authorFullname">Fullname</label>
+                    <input type="text" name="authorFullname"class="form-control" placeholder="Add Fullname of the client" ng-model="newClassified.author.fullname" required>
+                    <span ng-show="postClassifiedForm.authorFullname.$error.required && !postClassifiedForm.authorFullname.$pristine">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.authorPhone.$error.required
+                  && !postClassifiedForm.authorPhone.$pristine}">
+                    <label for="authorPhone">Contact</label>
+                    <input type="text" name="authorPhone"class="form-control" placeholder="Add Contact number of the client" ng-model="newClassified.author.phone" required>
+                    <span ng-show="postClassifiedForm.authorPhone.$error.required && !postClassifiedForm.authorPhone.$pristine">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <div class="form-group" ng-class="{'has-error': postClassifiedForm.authorEmail.$error.required
+                  && !postClassifiedForm.authorEmail.$pristine}">
+                    <label for="authorEmail">Email</label>
+                    <input type="text" name="authorEmail"class="form-control" placeholder="Add Email address of the client" ng-model="newClassified.author.email" required>
+                    <span ng-show="postClassifiedForm.authorEmail.$error.required && !postClassifiedForm.authorEmail.$pristine">
+                      This Field is required!!
+                    </span>
+                  </div>
+
+                  <br>
+                  <span class="author"><p><b>Image upload:</b></p></span>
+
+                  <div class="form-group">
+                      <label for="image">Image</label>
+                      <br>
+                      <div  ngf-drop="uploadFiles($files)" ng-model="files" ng-multiple="true">
+                            <input class="form-control" type="file" ngf-select="uploadFiles($files)" multiple title="upload" resetOnClick="true" >
+                      </div>
+                  </div>
+                  <div class="file" ng-repeat="file in files">
+                    <div class="status">{{file.status}}</div>
+                    <h4>Status</h4>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: {{file.progress}}%" ng-init="progress=0"></div>
+                    </div>
+                  </div>
+
+                  <br>
+                  <button ng-if="hideSubmitButton" type="submit" class="btn btn-success">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

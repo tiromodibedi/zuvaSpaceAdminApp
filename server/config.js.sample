@@ -1,0 +1,7 @@
+/**
+ * Store important variables
+ */
+module.exports = {
+    'mongoUrl': 'mongodb://localhost:27017/testDatabase',
+    'secretKey':'12345-67890-09876-54321'
+}
